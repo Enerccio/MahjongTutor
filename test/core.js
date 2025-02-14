@@ -177,7 +177,7 @@ class Test {
     }
 }
 
-function startExample() {
+window.startExample = function () {
     const root = document.getElementById("root");
 
     const stage = new Konva.Stage({
@@ -188,5 +188,3 @@ function startExample() {
     const test = new Test(stage);
     test.render();
 }
-
-startExample();

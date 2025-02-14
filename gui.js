@@ -20,6 +20,7 @@ class MahjongTutorRenderer {
             fill: 'black',
             stroke: 'black'
         });
+        background.listening(false);
         rootLayer.add(background);
         this.stage.add(rootLayer);
 
