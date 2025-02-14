@@ -23,4 +23,4 @@ if __name__ == "__main__":
 
     print("[files]")
     for (srcpath, dstpath) in lib:
-        print('"/' + srcpath + '" = "' + dstpath + '"')
+        print('"' + srcpath + '" = "' + dstpath + '"')
