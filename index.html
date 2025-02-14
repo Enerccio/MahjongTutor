@@ -1,0 +1,117 @@
+<!doctype html>
+<html style="height: 100%; min-height: 100%">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/konva@9/konva.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css" />
+    <link rel="stylesheet" href="tutor.css" />
+    <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
+    <script src="tutor/random_hand.js"></script>
+    <script src="tutor/tutor.js"></script>
+    <script src="gui.js"></script>
+    <script src="controller.js"></script>
+    <script src="index.js"></script>
+</head>
+<body style="height: 100%; min-height: 100%">
+    <py-config>
+        [files]
+        "/tutor/__init__.py" = "./tutor/__init__.py"
+        "/tutor/random_hand.py" = "./tutor/random_hand.py"
+        "/tutor/tutor.py" = "./tutor/tutor.py"
+        "/mahjong/mahjong/__init__.py" = "./mahjong/__init__.py"
+        "/mahjong/mahjong/agari.py" = "./mahjong/agari.py"
+        "/mahjong/mahjong/constants.py" = "./mahjong/constants.py"
+        "/mahjong/mahjong/meld.py" = "./mahjong/meld.py"
+        "/mahjong/mahjong/shanten.py" = "./mahjong/shanten.py"
+        "/mahjong/mahjong/tile.py" = "./mahjong/tile.py"
+        "/mahjong/mahjong/utils.py" = "./mahjong/utils.py"
+        "/mahjong/mahjong/utils_for_tests.py" = "./mahjong/utils_for_tests.py"
+        "/mahjong/mahjong/hand_calculating/__init__.py" = "./mahjong/hand_calculating/__init__.py"
+        "/mahjong/mahjong/hand_calculating/divider.py" = "./mahjong/hand_calculating/divider.py"
+        "/mahjong/mahjong/hand_calculating/fu.py" = "./mahjong/hand_calculating/fu.py"
+        "/mahjong/mahjong/hand_calculating/hand.py" = "./mahjong/hand_calculating/hand.py"
+        "/mahjong/mahjong/hand_calculating/hand_config.py" = "./mahjong/hand_calculating/hand_config.py"
+        "/mahjong/mahjong/hand_calculating/hand_response.py" = "./mahjong/hand_calculating/hand_response.py"
+        "/mahjong/mahjong/hand_calculating/scores.py" = "./mahjong/hand_calculating/scores.py"
+        "/mahjong/mahjong/hand_calculating/yaku.py" = "./mahjong/hand_calculating/yaku.py"
+        "/mahjong/mahjong/hand_calculating/yaku_config.py" = "./mahjong/hand_calculating/yaku_config.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/__init__.py" = "./mahjong/hand_calculating/yaku_list/__init__.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/aka_dora.py" = "./mahjong/hand_calculating/yaku_list/aka_dora.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/chankan.py" = "./mahjong/hand_calculating/yaku_list/chankan.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/chantai.py" = "./mahjong/hand_calculating/yaku_list/chantai.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/chiitoitsu.py" = "./mahjong/hand_calculating/yaku_list/chiitoitsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/chinitsu.py" = "./mahjong/hand_calculating/yaku_list/chinitsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/chun.py" = "./mahjong/hand_calculating/yaku_list/chun.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/daburu_open_riichi.py" = "./mahjong/hand_calculating/yaku_list/daburu_open_riichi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/daburu_riichi.py" = "./mahjong/hand_calculating/yaku_list/daburu_riichi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/dora.py" = "./mahjong/hand_calculating/yaku_list/dora.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/east.py" = "./mahjong/hand_calculating/yaku_list/east.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/haitei.py" = "./mahjong/hand_calculating/yaku_list/haitei.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/haku.py" = "./mahjong/hand_calculating/yaku_list/haku.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/hatsu.py" = "./mahjong/hand_calculating/yaku_list/hatsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/honitsu.py" = "./mahjong/hand_calculating/yaku_list/honitsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/honroto.py" = "./mahjong/hand_calculating/yaku_list/honroto.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/houtei.py" = "./mahjong/hand_calculating/yaku_list/houtei.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/iipeiko.py" = "./mahjong/hand_calculating/yaku_list/iipeiko.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/ippatsu.py" = "./mahjong/hand_calculating/yaku_list/ippatsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/ittsu.py" = "./mahjong/hand_calculating/yaku_list/ittsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/junchan.py" = "./mahjong/hand_calculating/yaku_list/junchan.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/nagashi_mangan.py" = "./mahjong/hand_calculating/yaku_list/nagashi_mangan.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/north.py" = "./mahjong/hand_calculating/yaku_list/north.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/open_riichi.py" = "./mahjong/hand_calculating/yaku_list/open_riichi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/pinfu.py" = "./mahjong/hand_calculating/yaku_list/pinfu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/renhou.py" = "./mahjong/hand_calculating/yaku_list/renhou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/riichi.py" = "./mahjong/hand_calculating/yaku_list/riichi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/rinshan.py" = "./mahjong/hand_calculating/yaku_list/rinshan.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/ryanpeiko.py" = "./mahjong/hand_calculating/yaku_list/ryanpeiko.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/sanankou.py" = "./mahjong/hand_calculating/yaku_list/sanankou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/sankantsu.py" = "./mahjong/hand_calculating/yaku_list/sankantsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/sanshoku.py" = "./mahjong/hand_calculating/yaku_list/sanshoku.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/sanshoku_douko.py" = "./mahjong/hand_calculating/yaku_list/sanshoku_douko.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/shosangen.py" = "./mahjong/hand_calculating/yaku_list/shosangen.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/south.py" = "./mahjong/hand_calculating/yaku_list/south.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/tanyao.py" = "./mahjong/hand_calculating/yaku_list/tanyao.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/toitoi.py" = "./mahjong/hand_calculating/yaku_list/toitoi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/tsumo.py" = "./mahjong/hand_calculating/yaku_list/tsumo.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/west.py" = "./mahjong/hand_calculating/yaku_list/west.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuhai_place.py" = "./mahjong/hand_calculating/yaku_list/yakuhai_place.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuhai_round.py" = "./mahjong/hand_calculating/yaku_list/yakuhai_round.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/__init__.py" = "./mahjong/hand_calculating/yaku_list/yakuman/__init__.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/chiihou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/chiihou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/chinroto.py" = "./mahjong/hand_calculating/yaku_list/yakuman/chinroto.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/chuuren_poutou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/chuuren_poutou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/daburu_chuuren_poutou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/daburu_chuuren_poutou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/daburu_kokushi.py" = "./mahjong/hand_calculating/yaku_list/yakuman/daburu_kokushi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/daichisei.py" = "./mahjong/hand_calculating/yaku_list/yakuman/daichisei.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/daisangen.py" = "./mahjong/hand_calculating/yaku_list/yakuman/daisangen.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/daisharin.py" = "./mahjong/hand_calculating/yaku_list/yakuman/daisharin.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/daisuushi.py" = "./mahjong/hand_calculating/yaku_list/yakuman/daisuushi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/kokushi.py" = "./mahjong/hand_calculating/yaku_list/yakuman/kokushi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/paarenchan.py" = "./mahjong/hand_calculating/yaku_list/yakuman/paarenchan.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/renhou_yakuman.py" = "./mahjong/hand_calculating/yaku_list/yakuman/renhou_yakuman.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/ryuisou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/ryuisou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/sashikomi.py" = "./mahjong/hand_calculating/yaku_list/yakuman/sashikomi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/shosuushi.py" = "./mahjong/hand_calculating/yaku_list/yakuman/shosuushi.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/suuankou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/suuankou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/suuankou_tanki.py" = "./mahjong/hand_calculating/yaku_list/yakuman/suuankou_tanki.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/suukantsu.py" = "./mahjong/hand_calculating/yaku_list/yakuman/suukantsu.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/tenhou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/tenhou.py"
+        "/mahjong/mahjong/hand_calculating/yaku_list/yakuman/tsuisou.py" = "./mahjong/hand_calculating/yaku_list/yakuman/tsuisou.py"
+    </py-config>
+    <py-script>
+        from pyscript import window
+        from pyodide.ffi import to_js
+        from tutor.tutor import Tutor
+
+        window.loadTutor(window.as_tutor(to_js(Tutor())))
+    </py-script>
+
+
+    <div style="display: block; height: 100%;">
+        <div id="root" style="height: 100%; display: flex; justify-content: center; align-items: center;">
+            <div id="loading" style=" text-align: center;">  L O A D I N G</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[submodule "mahjong"]
+	path = mahjong
+	url = https://github.com/MahjongRepository/mahjong.git
+[submodule "riichi-mahjong-tiles"]
+	path = riichi-mahjong-tiles
+	url = https://github.com/FluffyStuff/riichi-mahjong-tiles.git
