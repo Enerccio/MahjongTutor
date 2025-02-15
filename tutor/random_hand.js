@@ -17,38 +17,18 @@ class JSTile {
         this._is_red = is_red;
     }
 
-    loadSvg(path) {
-        return new Promise((resolve, reject) => {
-            let img = new Image()
-            img.src = path;
-            img.width = 30;
-            img.height = 40;
-            img.onload = () => resolve(img)
-            img.onerror = reject
-        })
-    }
-
     async getTileImage(type) {
-        const path =  "riichi-mahjong-tiles/" + style + "/" + type + ".svg";
-        if (imageMap[path] === undefined) {
-            imageMap[path] = await this.loadSvg(path);
-        }
+        const path =  "riichi-mahjong-tiles/" + window.mahjongTutorStyler.tileStyle + "/" + type + ".svg";
         return imageMap[path];
     }
 
     async  getTileBackground() {
-        const path = "riichi-mahjong-tiles/" + style + "/Front.svg";
-        if (imageMap[path] === undefined) {
-            imageMap[path] = await this.loadSvg(path);
-        }
+        const path = "riichi-mahjong-tiles/" + window.mahjongTutorStyler.tileStyle + "/Front.svg";
         return imageMap[path];
     }
 
-    async  getTileBackside() {
-        const path = "riichi-mahjong-tiles/" + style + "/Back.svg";
-        if (imageMap[path] === undefined) {
-            imageMap[path] = await this.loadSvg(path);
-        }
+    async getTileBackside() {
+        const path = "riichi-mahjong-tiles/" + window.mahjongTutorStyler.tileStyle + "/Back.svg";
         return imageMap[path];
     }
 
@@ -135,6 +115,34 @@ class JSRandomHand {
         return as_melds(this._ref.get_melds());
     }
 
+    get is_tsumo() {
+        return this._ref.is_tsumo;
+    }
+
+    get is_riichi() {
+        return this._ref.is_riichi;
+    }
+
+    /**
+     * @returns {*[JSTile]}
+     */
+    get_winds() {
+        return as_tiles(this._ref.get_winds());
+    }
+
+    /**
+     * @returns {*[JSTile]}
+     */
+    get_dora() {
+        return as_tiles(this._ref.dora_indicators);
+    }
+
+    /**
+     * @returns {*[JSTile]}
+     */
+    get_uradora() {
+        return as_tiles(this._ref.uradora_indicators);
+    }
 }
 
 function as_melds(pyrefarray) {
@@ -157,4 +165,68 @@ function as_tiles(pyrefarray) {
     }
 
     return tiles;
+}
+
+
+const __staticImageCacheLoader = [
+    "Back.svg",
+    "Blank.svg",
+    "Chun.svg",
+    "Front.svg",
+    "Haku.svg",
+    "Hatsu.svg",
+    "Man1.svg",
+    "Man2.svg",
+    "Man3.svg",
+    "Man4.svg",
+    "Man5-Dora.svg",
+    "Man5.svg",
+    "Man6.svg",
+    "Man7.svg",
+    "Man8.svg",
+    "Man9.svg",
+    "Nan.svg",
+    "Pei.svg",
+    "Pin1.svg",
+    "Pin2.svg",
+    "Pin3.svg",
+    "Pin4.svg",
+    "Pin5-Dora.svg",
+    "Pin5.svg",
+    "Pin6.svg",
+    "Pin7.svg",
+    "Pin8.svg",
+    "Pin9.svg",
+    "Shaa.svg",
+    "Sou1.svg",
+    "Sou2.svg",
+    "Sou3.svg",
+    "Sou4.svg",
+    "Sou5-Dora.svg",
+    "Sou5.svg",
+    "Sou6.svg",
+    "Sou7.svg",
+    "Sou8.svg",
+    "Sou9.svg",
+    "Ton.svg",
+]
+
+function loadSvg(path) {
+    return new Promise((resolve, reject) => {
+        let img = new Image()
+        img.src = path;
+        img.width = 30;
+        img.height = 40;
+        img.onload = () => resolve(img)
+        img.onerror = reject
+    })
+}
+
+async function preloadTiles() {
+    for (let style of ["Regular", "Black"]) {
+        for (let type of __staticImageCacheLoader) {
+            const path =  "riichi-mahjong-tiles/" + style + "/" + type;
+            imageMap[path] = await this.loadSvg(path);
+        }
+    }
 }

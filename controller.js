@@ -8,6 +8,8 @@ class MahjongTutor {
     constructor(tutor) {
         this._tutor = tutor;
         this._renderer = null;
+
+        this._showAnswer = false;
     }
 
     /**
@@ -25,15 +27,20 @@ class MahjongTutor {
         return this._tutor;
     }
 
-    start() {
-        this.regenerate();
+    get showAnswer() {
+        return this._showAnswer;
     }
 
-    regenerate() {
+    async start() {
+        await this.regenerate();
+    }
+
+    async regenerate() {
         console.log("Regenerating hand");
 
         this._tutor.generate();
         this._tutor.get_hand().print();
+        this._showAnswer = false;
         this.renderer.render();
     }
 

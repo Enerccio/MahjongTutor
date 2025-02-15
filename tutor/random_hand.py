@@ -5,7 +5,7 @@ from mahjong.hand_calculating.hand import HandCalculator
 from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.meld import Meld
 from mahjong.tile import TilesConverter
-from mahjong.constants import EAST, WEST, NORTH, SOUTH
+from mahjong.constants import EAST, WEST, NORTH, SOUTH, FIVE_RED_MAN, FIVE_RED_PIN, FIVE_RED_SOU
 
 _rnd = random.Random()
 calculator = HandCalculator()
@@ -43,15 +43,23 @@ class Hand(object):
         souzi = ""
         honors = ""
 
-        red = False
+        reds = []
         for (rank, type, value, is_red) in sorted(hand):
-            red = is_red or red
             if type == "man":
-                manzi += "r" if is_red else value
+                if is_red:
+                    reds.append(FIVE_RED_MAN)
+                else:
+                    manzi += value
             if type == "pin":
-                pinzi += "r" if is_red else value
+                if is_red:
+                    reds.append(FIVE_RED_PIN)
+                else:
+                    manzi += value
             if type == "sou":
-                souzi += "r" if is_red else value
+                if is_red:
+                    reds.append(FIVE_RED_SOU)
+                else:
+                    manzi += value
             if type == "dragon":
                 if value == "haku":
                     honors += "5"
@@ -69,7 +77,7 @@ class Hand(object):
                 if value == "north":
                     honors += "4"
 
-        return TilesConverter.string_to_136_array(man=manzi, sou=souzi, pin=pinzi, honors=honors, has_aka_dora=red)
+        return TilesConverter.string_to_136_array(man=manzi, sou=souzi, pin=pinzi, honors=honors, has_aka_dora=True) + reds
 
     @staticmethod
     def convert_hand_print(hand):

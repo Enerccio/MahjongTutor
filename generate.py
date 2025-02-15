@@ -24,3 +24,10 @@ if __name__ == "__main__":
     print("[files]")
     for (srcpath, dstpath) in lib:
         print('"' + srcpath + '" = "' + dstpath + '"')
+
+    print()
+    print("const __staticImageCacheLoader = [")
+    for root, dirs, files in os.walk("riichi-mahjong-tiles/Regular"):
+        for name in files:
+            print("\"" + name + "\", ")
+    print("]")

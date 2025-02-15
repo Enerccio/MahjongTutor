@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://unpkg.com/konva@9/konva.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css" />
     <link rel="stylesheet" href="tutor.css" />
     <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
+    <script src="theme.js"></script>
     <script src="tutor/random_hand.js"></script>
     <script src="tutor/tutor.js"></script>
     <script src="gui.js"></script>
@@ -110,7 +114,7 @@
 
     <div style="display: block; height: 100%;">
         <div id="root" style="height: 100%; display: flex; justify-content: center; align-items: center;">
-            <div id="loading" style=" text-align: center;">  L O A D I N G</div>
+            <div id="loading" style=" text-align: center;"><i class="fa-solid fa-spinner"></i>  L O A D I N G</div>
         </div>
     </div>
 </body>
