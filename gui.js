@@ -38,19 +38,20 @@ class MahjongTutorRenderer {
         await this.withBorder(layer, bx + 110, by, "Seat", window.mahjongTutorStyler.tilesBackground,
             window.mahjongTutorStyler.sectionLabelColor, 100, 50,
             async (layer, bx, by) => await this.renderSeatWind(layer, bx, by));
-        await this.withBorder(layer, bx + 220, by, "Dora Indicator", window.mahjongTutorStyler.tilesBackground,
-            window.mahjongTutorStyler.sectionLabelColor, 240, 50,
+        await this.withBorder(layer, bx + 220, by, "Dora", window.mahjongTutorStyler.tilesBackground,
+            window.mahjongTutorStyler.sectionLabelColor, 180, 50,
             async (layer, bx, by) => await this.renderDora(layer, bx, by, false));
-        await this.withBorder(layer, bx + 470, by, "Uradora Indicator", window.mahjongTutorStyler.tilesBackground,
-            window.mahjongTutorStyler.sectionLabelColor, 240, 50,
+        await this.withBorder(layer, bx + 410, by, "Uradora", window.mahjongTutorStyler.tilesBackground,
+            window.mahjongTutorStyler.sectionLabelColor, 180, 50,
             async (layer, bx, by) => await this.renderDora(layer, bx, by, true));
+        await this.withBorder(layer, bx + 600, by, "Ronpai", window.mahjongTutorStyler.tilesBackground,
+            window.mahjongTutorStyler.sectionLabelColor, 110, 50,
+            async (layer, bx, by) => await this.renderRonpai(layer, bx, by));
 
         await this.withBorder(layer, bx, by + 120, "Hand", window.mahjongTutorStyler.tilesBackground,
-                window.mahjongTutorStyler.sectionLabelColor, 550, 80,
+                window.mahjongTutorStyler.sectionLabelColor, 710, 80,
             async (layer, bx, by) => await this.renderHandTiles(layer, bx, by));
-        await this.withBorder(layer, bx + 560, by + 120, "Winning tile", window.mahjongTutorStyler.tilesBackground,
-                window.mahjongTutorStyler.sectionLabelColor, 150, 50,
-            async (layer, bx, by) => await this.renderRonpai(layer, bx, by));
+
         await this.withBorder(layer, bx, by + 270, "Open Melds", window.mahjongTutorStyler.tilesBackground,
             window.mahjongTutorStyler.sectionLabelColor, 710, 50,
             async (layer, bx, by) => await this.renderMelds(layer, bx, by));
@@ -144,10 +145,10 @@ class MahjongTutorRenderer {
             height: 40,
         });
         const type = new Konva.Text({
-            x: bx + 40,
+            x: bx + 20,
             y: by,
             text: hand.is_tsumo ? "TSUMO" : "RON",
-            fontSize: window.mahjongTutorStyler.textSizeLarge,
+            fontSize: window.mahjongTutorStyler.textSizeMedium,
             fontFamily: window.mahjongTutorStyler.font,
             fill: window.mahjongTutorStyler.buttonTextColor,
             padding: 20,

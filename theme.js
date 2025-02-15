@@ -7,6 +7,7 @@ class MahjongTutorStyler {
         this.tileStyle = "Black";
 
         this.font = "Calibri";
+        this.textSizeMedium = 14;
         this.textSizeLarge = 18;
         this.iconSize = 18;
 

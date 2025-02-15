@@ -197,6 +197,7 @@ class Hand(object):
 
             # add specifiers
             source_tiles = self.all_tiles + []
+            ronpai_choice = []
 
             melds = []
             can_riichi = True
@@ -210,6 +211,8 @@ class Hand(object):
                         can_riichi = False
                         melds.append(Meld(meld_type=Meld.CHI, opened=True, tiles=Hand.convert_hand(meld)))
                         self.melds.append((sorted(meld), True))
+                    for tile in meld:
+                        ronpai_choice.append(tile)
                 else:
                     if _rnd.random() < cfg.pon_chance:
                         meld = self.generate_pon(source_tiles)
@@ -218,15 +221,21 @@ class Hand(object):
                             can_riichi = False
                             melds.append(Meld(meld_type=Meld.PON, opened=True, tiles=Hand.convert_hand(meld)))
                             self.melds.append((sorted(meld), True))
+                        for tile in meld:
+                            ronpai_choice.append(tile)
                     else:
                         # kan
                         meld = self.generate_pon(source_tiles, 4)
                         opened = _rnd.random() < cfg.kan_open_chance
-                        open = True
+                        open = _rnd.random() < cfg.kan_closed_declare_chance
                         can_riichi = False if opened else can_riichi
                         melds.append(Meld(meld_type=Meld.KAN, opened=opened, tiles=Hand.convert_hand(meld)))
-                        self.melds.append((sorted(meld), opened))
-                        self.kan_count += 1
+                        if open:
+                            self.melds.append((sorted(meld), opened))
+                            self.kan_count += 1
+                        else:
+                            for tile in meld:
+                                ronpai_choice.append(tile)
                 for tile in meld:
                     self.hand.append(tile)
                     if not open:
@@ -238,11 +247,12 @@ class Hand(object):
                 self.hand.append(tile)
                 self.pure_hand.append(tile)
                 source_tiles.remove(tile)
+                ronpai_choice.append(tile)
 
             self.hand = sorted(self.hand)
             self.pure_hand = sorted(self.pure_hand)
 
-            self.win_tile = _rnd.choice(self.hand)
+            self.win_tile = _rnd.choice(ronpai_choice)
             if self.win_tile in self.pure_hand:
                 self.pure_hand.remove(self.win_tile)
 
@@ -274,6 +284,8 @@ class Hand(object):
         for i in range(3):
             if _rnd.random() < cfg.other_player_kan_chance[i]:
                 self.kan_count += 1
+
+        self.kan_count = min(self.kan_count, 3)
 
         self.dora_indicators = []
         self.uradora_indicators = []
