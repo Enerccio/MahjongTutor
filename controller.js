@@ -41,7 +41,7 @@ class MahjongTutor {
         this._tutor.generate();
         this._tutor.get_hand().print();
         this._showAnswer = false;
-        this.renderer.render();
+        await this.renderer.render();
     }
 
 }
