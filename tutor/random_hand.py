@@ -54,12 +54,12 @@ class Hand(object):
                 if is_red:
                     reds.append(FIVE_RED_PIN)
                 else:
-                    manzi += value
+                    pinzi += value
             if type == "sou":
                 if is_red:
                     reds.append(FIVE_RED_SOU)
                 else:
-                    manzi += value
+                    souzi += value
             if type == "dragon":
                 if value == "haku":
                     honors += "5"
