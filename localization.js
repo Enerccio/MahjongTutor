@@ -60,7 +60,7 @@ class LocalizationJP extends Localization {
         this.yaku["Junchan"] = "純全帯么九";
         this.yaku["Nagashi Mangan"] = "流し満貫";
         this.yaku["Yakuhai (north)"] = "役牌　北";
-        this.yaku["Open Riichi"] = "ダブル立直";
+        this.yaku["Open Riichi"] = "オープン立直";
         this.yaku["Pinfu"] = "平和";
         this.yaku["Renhou"] = "人和";
         this.yaku["Riichi"] = "立直";
