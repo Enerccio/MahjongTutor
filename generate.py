@@ -1,6 +1,10 @@
 
 import os
 
+from mahjong.hand_calculating.yaku_list import *
+from mahjong.hand_calculating.yaku_list.yakuman import *
+from mahjong.hand_calculating.yaku import Yaku
+
 lib = []
 
 def scan(folder, base):
@@ -30,4 +34,12 @@ if __name__ == "__main__":
     for root, dirs, files in os.walk("riichi-mahjong-tiles/Regular"):
         for name in files:
             print("\"" + name + "\", ")
-    print("]")
+    print("]\n")
+
+
+    for key in dict(globals()):
+        e = globals()[key]
+        if isinstance(e, type) and issubclass(e, Yaku) and e != Yaku:
+            obj = e()
+            name = obj.name
+            print("this.yaku[\"%s\"] = \"\";" % name)
