@@ -87,8 +87,10 @@ class HasValue extends Eventable {
 }
 
 class ButtonBase extends Eventable {
-    constructor(gh, layer, x, y, callback, group) {
+    constructor(gh, layer, x, y, w, h, callback, group) {
         super(gh, layer, x, y, group);
+        this.w = w;
+        this.h = h;
         this.callback = callback;
         this.buttonBody = null;
     }
@@ -99,14 +101,20 @@ class ButtonBase extends Eventable {
 
     async renderComponent() {
         const info = await this.renderButtonInfo();
+        let ch = info.height()
+        let cw = info.width()
+
+        info.x(this.x + this.w / 2 - cw / 2);
+        info.y(this.y + this.h / 2 - ch / 2);
+
         this.buttonBody = new Konva.Rect({
             x: this.x,
             y: this.y,
             stroke: window.mahjongTutorStyler.buttonStrikeColor,
             strokeWidth: 5,
             fill: window.mahjongTutorStyler.buttonFillColor,
-            width: info.width() - 10,
-            height: info.height() - 10,
+            width: this.w,
+            height: this.h,
             shadowColor: window.mahjongTutorStyler.buttonShadowColor,
             shadowBlur: 10,
             shadowOffsetX: 10,
@@ -147,41 +155,39 @@ class ButtonBase extends Eventable {
 }
 
 class TextButton extends ButtonBase {
-    constructor(gh, layer, x, y, callback, group, text) {
-        super(gh, layer, x, y, callback, group);
+    constructor(gh, layer, x, y, w, h, callback, group, text) {
+        super(gh, layer, x, y, w, h, callback, group);
         this.text = text;
     }
 
     async renderButtonInfo() {
         return new Konva.Text({
-            x: this.x - 6,
-            y: this.y - 5,
+            x: this.x,
+            y: this.y,
             text: this.text,
             fontSize: window.mahjongTutorStyler.textSizeLarge,
             fontFamily: window.mahjongTutorStyler.font,
             fill: window.mahjongTutorStyler.buttonTextColor,
-            padding: 20,
-            align: 'center',
+            align: 'left',
         });
     }
 }
 
 class IconButton extends ButtonBase {
-    constructor(gh, layer, x, y, callback, group, icon) {
-        super(gh, layer, x, y, callback, group);
+    constructor(gh, layer, x, y, w, h, callback, group, icon) {
+        super(gh, layer, x, y, w, h, callback, group);
         this.icon = icon;
     }
 
     async renderButtonInfo() {
         return new Konva.Text({
-            x: this.x - 6,
-            y: this.y - 5,
+            x: this.x,
+            y: this.y,
             text: window.mahjongTutorStyler.getIcon(this.icon),
             fontSize: window.mahjongTutorStyler.iconSize,
             fontFamily: 'FontAwesome',
             fill: window.mahjongTutorStyler.buttonTextColor,
-            padding: 20,
-            align: 'center',
+            align: 'left',
         });
     }
 }
@@ -338,13 +344,22 @@ class GuiHelper {
         this.render().then(r => {});
     }
 
-    async renderButton(layer, text, callback, x, y, group) {
-        const button = new TextButton(this, layer, x, y, callback, group, text);
+    swapLocalization() {
+        if (window.loc instanceof LocalizationJP) {
+            window.loc = new Localization();
+        } else {
+            window.loc = new LocalizationJP();
+        }
+        this.render().then(r => {});
+    }
+
+    async renderButton(layer, text, callback, x, y, w, h, group) {
+        const button = new TextButton(this, layer, x, y, w, h, callback, group, text);
         await button.render();
     }
 
-    async renderIconButton(layer, icon, callback, x, y, group) {
-        const button = new IconButton(this, layer, x, y, callback, group, icon);
+    async renderIconButton(layer, icon, callback, x, y, w, h, group) {
+        const button = new IconButton(this, layer, x, y, w, h, callback, group, icon);
         await button.render();
     }
 

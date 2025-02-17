@@ -1,3 +1,4 @@
+import traceback
 
 try:
     from tutor.random_hand import Hand
@@ -32,7 +33,17 @@ class Tutor(object):
     def generate(self):
         self.hand = Hand()
 
-        self.hand.generate(self)
+        cnt = 0
+        while True:
+            # noinspection PyBroadException
+            try:
+                self.hand.generate(self)
+                break
+            except:
+                traceback.print_exc()
+                cnt += 1
+                if cnt > 10:
+                    break
 
     def get_hand(self):
         return self.hand

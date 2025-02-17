@@ -33,17 +33,21 @@ class MahjongTutorStyler {
             return this._icon_cache[iconName];
 
         for (let ss of document.styleSheets) {
-            for (let rule of ss.cssRules) {
-                if (rule instanceof CSSStyleRule) {
-                    if (rule.selectorText === iconName) {
-                        let s = rule.style.getPropertyValue("--fa");
-                        s = s.slice(1, s.length-1);
-                        s = s.replace("\\\\", "\\");
-                        const char = String.fromCharCode(parseInt(s.slice(1), 16));
-                        this._icon_cache[iconName] = char;
-                        return this._icon_cache[iconName]
+            try {
+                for (let rule of ss.cssRules) {
+                    if (rule instanceof CSSStyleRule) {
+                        if (rule.selectorText === iconName) {
+                            let s = rule.style.getPropertyValue("--fa");
+                            s = s.slice(1, s.length-1);
+                            s = s.replace("\\\\", "\\");
+                            const char = String.fromCharCode(parseInt(s.slice(1), 16));
+                            this._icon_cache[iconName] = char;
+                            return this._icon_cache[iconName]
+                        }
                     }
                 }
+            } catch (e) {
+
             }
         }
     }
