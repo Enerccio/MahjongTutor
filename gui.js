@@ -1,36 +1,13 @@
-
 const GRP_MAIN = "main";
 const GRP_SETTINGS = "settings";
 const GRP_RESULTS = "results";
 
-class MahjongTutorRenderer {
+class MahjongTutorRenderer extends GuiHelper {
 
     constructor(controller, stage) {
+        super(stage);
+
         this.controller = controller
-        this.stage = stage
-
-        this.buttonGroups = { };
-    }
-
-    async render() {
-        this.stage.removeChildren()
-        this.buttonGroups = {};
-
-        const rootLayer = new Konva.Layer();
-
-        const background = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: 900,
-            height: 600,
-            fill: window.mahjongTutorStyler.fillColor,
-            stroke: window.mahjongTutorStyler.fillColor
-        });
-        background.listening(false);
-        rootLayer.add(background);
-        this.stage.add(rootLayer);
-
-        await this.renderRoot(rootLayer);
     }
 
     async renderRoot(layer) {
@@ -309,119 +286,4 @@ class MahjongTutorRenderer {
             () => this.controller.regenerate(), bx+70, by, GRP_MAIN);
     }
 
-    async renderButton(layer, text, callback, x, y, group) {
-        await this._renderButton(layer, text, null, callback, x, y, group);
-    }
-
-    async renderIconButton(layer, icon, callback, x, y, group) {
-        await this._renderButton(layer, null, icon, callback, x, y, group);
-    }
-
-    async _renderButton(layer, text, icon, callback, x, y, group) {
-        let info;
-        if (text !== null) {
-            info = new Konva.Text({
-                x: x - 6,
-                y: y - 5,
-                text: text,
-                fontSize: window.mahjongTutorStyler.textSizeLarge,
-                fontFamily: window.mahjongTutorStyler.font,
-                fill: window.mahjongTutorStyler.buttonTextColor,
-                padding: 20,
-                align: 'center',
-            });
-        } else {
-            info = new Konva.Text({
-                x: x - 6,
-                y: y - 5,
-                text: window.mahjongTutorStyler.getIcon(icon),
-                fontSize: window.mahjongTutorStyler.iconSize,
-                fontFamily: 'FontAwesome',
-                fill: window.mahjongTutorStyler.buttonTextColor,
-                padding: 20,
-                align: 'center',
-            });
-        }
-
-        const buttonBody = new Konva.Rect({
-            x: x,
-            y: y,
-            stroke: window.mahjongTutorStyler.buttonStrikeColor,
-            strokeWidth: 5,
-            fill: window.mahjongTutorStyler.buttonFillColor,
-            width: info.width() - 10,
-            height: info.height() - 10,
-            shadowColor: window.mahjongTutorStyler.buttonShadowColor,
-            shadowBlur: 10,
-            shadowOffsetX: 10,
-            shadowOffsetY: 10,
-            shadowOpacity: 0.2,
-            cornerRadius: 10,
-        });
-
-        info.listening(false);
-
-        layer.add(buttonBody);
-        layer.add(info);
-
-        buttonBody.on('mouseup touchstart', function() {
-            callback();
-        });
-        buttonBody.on("mouseover", function () {
-            buttonBody.fill(window.mahjongTutorStyler.buttonMMFillColor);
-        });
-        buttonBody.on("mouseleave", function () {
-            buttonBody.fill(window.mahjongTutorStyler.buttonFillColor);
-        });
-
-        if (this.buttonGroups[group] === undefined) {
-            this.buttonGroups[group] = [];
-        }
-        this.buttonGroups[group].push(buttonBody);
-    }
-
-    async withBorder(layer, bx, by, text, color, scolor, w, h, callback) {
-        const label = new Konva.Text({
-            x: bx,
-            y: by,
-            text: text,
-            fontSize: window.mahjongTutorStyler.textSizeLarge,
-            fontFamily: window.mahjongTutorStyler.font,
-            fill: scolor,
-            padding: 20,
-            align: 'center',
-        });
-
-        const border = new Konva.Rect({
-            x: bx,
-            y: by,
-            stroke: scolor,
-            strokeWidth: 5,
-            fill: color,
-            width: w,
-            height: label.height() + h,
-            shadowColor: 'black',
-            shadowBlur: 10,
-            shadowOffsetX: 10,
-            shadowOffsetY: 10,
-            shadowOpacity: 0.2,
-            cornerRadius: 10,
-        });
-
-        layer.add(border);
-        layer.add(label);
-
-        await callback(layer, bx+15, by+label.height());
-    }
-
-    swapTheme() {
-        if (window.mahjongTutorStyler instanceof LightStyle) {
-            window.mahjongTutorStyler = new DarkStyle();
-        } else {
-            window.mahjongTutorStyler = new LightStyle();
-        }
-        this.render().then(r => {});
-    }
-
 }
-

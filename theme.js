@@ -22,6 +22,10 @@ class MahjongTutorStyler {
         this.riichiBonBody = "#ffffff";
         this.riichiBonShadowColor = "#000000";
         this.riichiBonPin = "#ff0000";
+        this.tfStrikeColor = "#555";
+        this.tfFillColor = "#ddd";
+        this.tfTextColor = "#000000"
+        this.tfShadowColor = "black"
     }
 
     getIcon(iconName) {
