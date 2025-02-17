@@ -15,6 +15,9 @@ class Tutor(object):
         self.kan_open_chance = 0.75
         self.kan_closed_declare_chance = 0.5
         self.other_player_kan_chance = [0.3, 0.2, 0]
+        self.chiitoitsu_chance = 0.15
+        self.tsumo_chance = 0.5
+        self.riichi_chance = 0.5
 
         # debug
 
@@ -24,6 +27,7 @@ class Tutor(object):
         # self.pon_open_chance = 0
         # self.kan_open_chance = 0
         # self.kan_closed_declare_chance = 0.5
+        # self.chiitoitsu_chance = 1
 
     def generate(self):
         self.hand = Hand()

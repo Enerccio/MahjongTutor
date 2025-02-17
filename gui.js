@@ -1,13 +1,21 @@
 
+const GRP_MAIN = "main";
+const GRP_SETTINGS = "settings";
+const GRP_RESULTS = "results";
+
 class MahjongTutorRenderer {
 
     constructor(controller, stage) {
         this.controller = controller
         this.stage = stage
+
+        this.buttonGroups = { };
     }
 
     async render() {
         this.stage.removeChildren()
+        this.buttonGroups = {};
+
         const rootLayer = new Konva.Layer();
 
         const background = new Konva.Rect({
@@ -26,9 +34,9 @@ class MahjongTutorRenderer {
     }
 
     async renderRoot(layer) {
-        await this.renderControls(layer, 0, 0);
+        await this.renderControls(layer, 10, 10);
 
-        await this.renderHand(layer, 0, 70);
+        await this.renderHand(layer, 10, 80);
     }
 
     async renderHand(layer, bx, by) {
@@ -296,20 +304,20 @@ class MahjongTutorRenderer {
      */
     async renderControls(parent, bx, by) {
         await this.renderIconButton(parent, ".fa-circle-half-stroke", () => this.swapTheme(),
-            bx+10, by);
+            bx+10, by, GRP_MAIN);
         await this.renderButton(parent, "NEW HAND",
-            () => this.controller.regenerate(), bx+70, by);
+            () => this.controller.regenerate(), bx+70, by, GRP_MAIN);
     }
 
-    async renderButton(layer, text, callback, x, y) {
-        await this._renderButton(layer, text, null, callback, x, y);
+    async renderButton(layer, text, callback, x, y, group) {
+        await this._renderButton(layer, text, null, callback, x, y, group);
     }
 
-    async renderIconButton(layer, icon, callback, x, y) {
-        await this._renderButton(layer, null, icon, callback, x, y);
+    async renderIconButton(layer, icon, callback, x, y, group) {
+        await this._renderButton(layer, null, icon, callback, x, y, group);
     }
 
-    async _renderButton(layer, text, icon, callback, x, y) {
+    async _renderButton(layer, text, icon, callback, x, y, group) {
         let info;
         if (text !== null) {
             info = new Konva.Text({
@@ -365,6 +373,11 @@ class MahjongTutorRenderer {
         buttonBody.on("mouseleave", function () {
             buttonBody.fill(window.mahjongTutorStyler.buttonFillColor);
         });
+
+        if (this.buttonGroups[group] === undefined) {
+            this.buttonGroups[group] = [];
+        }
+        this.buttonGroups[group].push(buttonBody);
     }
 
     async withBorder(layer, bx, by, text, color, scolor, w, h, callback) {

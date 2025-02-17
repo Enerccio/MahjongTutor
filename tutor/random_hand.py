@@ -201,53 +201,66 @@ class Hand(object):
 
             melds = []
             can_riichi = True
-            for _ in range(4):
-                open = False
-                if _rnd.random() < cfg.chi_chance:
-                    # generate chi
-                    meld = self.generate_chi(source_tiles)
-                    if _rnd.random() < cfg.chi_open_chance:
-                        open = True
-                        can_riichi = False
-                        melds.append(Meld(meld_type=Meld.CHI, opened=True, tiles=Hand.convert_hand(meld)))
-                        self.melds.append((sorted(meld), True))
+            if _rnd.random() < cfg.chiitoitsu_chance:
+                # generate chiitoitsu
+
+                for _ in range(7):
+                    meld = self.generate_pon(source_tiles, 2)
                     for tile in meld:
+                        self.hand.append(tile)
+                        self.pure_hand.append(tile)
+                        source_tiles.remove(tile)
                         ronpai_choice.append(tile)
-                else:
-                    if _rnd.random() < cfg.pon_chance:
-                        meld = self.generate_pon(source_tiles)
-                        if _rnd.random() < cfg.pon_open_chance:
+            else:
+                # generate regular hand
+
+                for _ in range(4):
+                    open = False
+                    if _rnd.random() < cfg.chi_chance:
+                        # generate chi
+                        meld = self.generate_chi(source_tiles)
+                        if _rnd.random() < cfg.chi_open_chance:
                             open = True
                             can_riichi = False
-                            melds.append(Meld(meld_type=Meld.PON, opened=True, tiles=Hand.convert_hand(meld)))
+                            melds.append(Meld(meld_type=Meld.CHI, opened=True, tiles=Hand.convert_hand(meld)))
                             self.melds.append((sorted(meld), True))
                         for tile in meld:
                             ronpai_choice.append(tile)
                     else:
-                        # kan
-                        meld = self.generate_pon(source_tiles, 4)
-                        opened = _rnd.random() < cfg.kan_open_chance
-                        open = _rnd.random() < cfg.kan_closed_declare_chance
-                        can_riichi = False if opened else can_riichi
-                        melds.append(Meld(meld_type=Meld.KAN, opened=opened, tiles=Hand.convert_hand(meld)))
-                        if open:
-                            self.melds.append((sorted(meld), opened))
-                            self.kan_count += 1
-                        else:
+                        if _rnd.random() < cfg.pon_chance:
+                            meld = self.generate_pon(source_tiles)
+                            if _rnd.random() < cfg.pon_open_chance:
+                                open = True
+                                can_riichi = False
+                                melds.append(Meld(meld_type=Meld.PON, opened=True, tiles=Hand.convert_hand(meld)))
+                                self.melds.append((sorted(meld), True))
                             for tile in meld:
                                 ronpai_choice.append(tile)
-                for tile in meld:
-                    self.hand.append(tile)
-                    if not open:
-                        self.pure_hand.append(tile)
-                    source_tiles.remove(tile)
+                        else:
+                            # kan
+                            meld = self.generate_pon(source_tiles, 4)
+                            opened = _rnd.random() < cfg.kan_open_chance
+                            open = _rnd.random() < cfg.kan_closed_declare_chance
+                            can_riichi = False if opened else can_riichi
+                            melds.append(Meld(meld_type=Meld.KAN, opened=opened, tiles=Hand.convert_hand(meld)))
+                            if open:
+                                self.melds.append((sorted(meld), opened))
+                                self.kan_count += 1
+                            else:
+                                for tile in meld:
+                                    ronpai_choice.append(tile)
+                    for tile in meld:
+                        self.hand.append(tile)
+                        if not open:
+                            self.pure_hand.append(tile)
+                        source_tiles.remove(tile)
 
-            pair = self.generate_pair(source_tiles)
-            for tile in pair:
-                self.hand.append(tile)
-                self.pure_hand.append(tile)
-                source_tiles.remove(tile)
-                ronpai_choice.append(tile)
+                pair = self.generate_pair(source_tiles)
+                for tile in pair:
+                    self.hand.append(tile)
+                    self.pure_hand.append(tile)
+                    source_tiles.remove(tile)
+                    ronpai_choice.append(tile)
 
             self.hand = sorted(self.hand)
             self.pure_hand = sorted(self.pure_hand)
@@ -260,8 +273,8 @@ class Hand(object):
                 break
 
     def finish_hand(self, can_riichi, melds, cfg, source_tiles):
-        self.is_tsumo = _rnd.random() < 0.5
-        self.is_riichi = can_riichi and _rnd.random() < 0.5
+        self.is_tsumo = _rnd.random() < cfg.tsumo_chance
+        self.is_riichi = can_riichi and _rnd.random() < cfg.riichi_chance
 
         if self.round_wind[2] == "east":
             round_wind = EAST
