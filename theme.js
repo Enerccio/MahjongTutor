@@ -9,6 +9,7 @@ class MahjongTutorStyler {
         this.font = "Calibri";
         this.textSizeMedium = 14;
         this.textSizeLarge = 18;
+        this.textSizeExtraLarge = 24;
         this.iconSize = 18;
 
         this.fillColor = "#000000";

@@ -343,6 +343,18 @@ class Hand(object):
         print(self.fu_details)
 
     @publicapi
+    def get_fu(self):
+        return self.fu
+
+    @publicapi
+    def get_han(self):
+        return self.han
+
+    @publicapi
+    def get_points(self):
+        return self.cost
+
+    @publicapi
     def get_hand_tiles(self):
         return self.pure_hand
 
@@ -354,5 +366,14 @@ class Hand(object):
     def get_melds(self):
         return self.melds
 
+    @publicapi
     def get_winds(self):
         return [self.round_wind, self.player_wind]
+
+    @publicapi
+    def get_fu_details(self):
+        return self.fu_details
+
+    @publicapi
+    def get_yaku(self):
+        return self.yaku

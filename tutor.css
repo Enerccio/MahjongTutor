@@ -1,0 +1,8 @@
+
+@keyframes rotationAnimation {
+    50% {transform: rotate(180deg);}
+}
+
+.loadingRotation {
+    animation: rotationAnimation 5s infinite;
+}

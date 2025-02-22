@@ -10,10 +10,133 @@ class MahjongTutorRenderer extends GuiHelper {
         this.controller = controller
     }
 
+    async render() {
+        await super.render();
+
+        if (this.controller.showAnswer) {
+            for (let c of this.buttonGroups[GRP_MAIN]) {
+                c.disableEvents();
+            }
+        }
+    }
+
     async renderRoot(layer) {
         await this.renderControls(layer, 10, 10);
-
         await this.renderHand(layer, 10, 80);
+        if (this.controller.showAnswer) {
+            await this.renderResultLayer(layer, 70, 20);
+        }
+    }
+
+    async renderResultLayer(layer, bx, by) {
+        const hand = this.controller.tutor.get_hand();
+
+        let h = 0;
+        const fuText = hand.get_fu_details_complete();
+        const fuSize = this.getTextSize(fuText, window.mahjongTutorStyler.textSizeMedium);
+        h += 30;
+        h += 30;
+        h += 60;
+        h += 80;
+        h += fuSize.height;
+        h += 70;
+
+        const yakuText = hand.get_yaku_full();
+        const yakuSize = this.getTextSize(yakuText, window.mahjongTutorStyler.textSizeMedium);
+
+        let yw = 0;
+        let yh = 0;
+        yh += yakuSize.height;
+        yh += 70;
+        yw += Math.max(fuSize.width+30, 240) + 20 + yakuSize.width;
+
+        await this.withBorder(layer, bx, by, window.loc.result, window.mahjongTutorStyler.tilesBackground,
+            window.mahjongTutorStyler.sectionLabelColor, Math.max(yw, 500), Math.max(h, yh),
+            async (layer, bx, by) => await this.renderResult(layer, bx, by));
+    }
+
+    async renderResult(layer, x, y) {
+        const hand = this.controller.tutor.get_hand();
+
+        let bx = x;
+        let by = y;
+        layer.add(new Konva.Text({
+            x: bx,
+            y: by,
+            text: window.loc.fuLabel + hand.get_fu(),
+            fontSize: window.mahjongTutorStyler.textSizeExtraLarge,
+            fontFamily: window.mahjongTutorStyler.font,
+            fill: window.mahjongTutorStyler.buttonTextColor,
+            padding: 20,
+            align: 'center',
+        }));
+        by += 30;
+        layer.add(new Konva.Text({
+            x: bx,
+            y: by,
+            text: window.loc.hanLabel + hand.get_han(),
+            fontSize: window.mahjongTutorStyler.textSizeExtraLarge,
+            fontFamily: window.mahjongTutorStyler.font,
+            fill: window.mahjongTutorStyler.buttonTextColor,
+            padding: 20,
+            align: 'center',
+        }));
+        by += 30;
+        layer.add(new Konva.Text({
+            x: bx,
+            y: by,
+            text: window.loc.pointsLabel + hand.get_points(),
+            fontSize: window.mahjongTutorStyler.textSizeExtraLarge,
+            fontFamily: window.mahjongTutorStyler.font,
+            fill: window.mahjongTutorStyler.buttonTextColor,
+            padding: 20,
+            align: 'center',
+        }));
+        by += 60;
+
+        const fuText = hand.get_fu_details_complete();
+        const fuSize = this.getTextSize(fuText, window.mahjongTutorStyler.textSizeMedium);
+        const yakuText = hand.get_yaku_full();
+        const yakuSize = this.getTextSize(yakuText, window.mahjongTutorStyler.textSizeMedium);
+
+        await this.withBorder(layer, bx, by, window.loc.fu, window.mahjongTutorStyler.tilesBackground,
+            window.mahjongTutorStyler.sectionLabelColor, Math.max(fuSize.width+70, 200), fuSize.height+10,
+            async (layer, _bx, _by) => {
+                layer.add(new Konva.Text({
+                    x: _bx,
+                    y: _by,
+                    text: fuText,
+                    fontSize: window.mahjongTutorStyler.textSizeMedium,
+                    fontFamily: window.mahjongTutorStyler.font,
+                    fill: window.mahjongTutorStyler.buttonTextColor,
+                    align: 'left',
+                }));
+            });
+        by += fuSize.height;
+
+        await this.withBorder(layer,
+            x + Math.max(fuSize.width+70, 200) + 20,
+            y,
+            window.loc.yaku, window.mahjongTutorStyler.tilesBackground,
+            window.mahjongTutorStyler.sectionLabelColor,
+            Math.max(yakuSize.width+30, 240),
+            Math.max(yakuSize.height+10, by),
+            async (layer, _bx, _by) => {
+                layer.add(new Konva.Text({
+                    x: _bx,
+                    y: _by,
+                    text: yakuText,
+                    fontSize: window.mahjongTutorStyler.textSizeMedium,
+                    fontFamily: window.mahjongTutorStyler.font,
+                    fill: window.mahjongTutorStyler.buttonTextColor,
+                    align: 'left',
+                }));
+            });
+
+        by += 80;
+        await this.renderButton(layer, window.loc.ret, async () => this.controller.hide(),
+            bx, Math.max(by, yakuSize.height + 80), 100, 40, GRP_RESULTS);
+
     }
 
     async renderHand(layer, bx, by) {
@@ -281,11 +404,13 @@ class MahjongTutorRenderer extends GuiHelper {
      */
     async renderControls(parent, bx, by) {
         await this.renderButton(parent, window.loc.language,
-            () => this.swapLocalization(), bx+10, by, 100, 50,  GRP_MAIN);
-        await this.renderIconButton(parent, ".fa-circle-half-stroke", () => this.swapTheme(),
+            () => this.controller.swapLocalization(), bx+10, by, 100, 50,  GRP_MAIN);
+        await this.renderIconButton(parent, ".fa-circle-half-stroke", () => this.controller.swapTheme(),
             bx+120, by, 50, 50, GRP_MAIN);
         await this.renderButton(parent, window.loc.newHand,
             () => this.controller.regenerate(), bx+180, by, 120, 50, GRP_MAIN);
+        await this.renderButton(parent, window.loc.reveal,
+            () => this.controller.reveal(), bx+310, by, 120, 50, GRP_MAIN);
     }
 
 }

@@ -2,6 +2,8 @@
 class GuiTest extends GuiHelper {
 
     async renderRoot(layer) {
+        console.log(this.getTextSize("aaaa", window.mahjongTutorStyler.textSizeLarge));
+
         await this.withBorder(layer, 0, 0, "Test",
             window.mahjongTutorStyler.tilesBackground,
             window.mahjongTutorStyler.sectionLabelColor,

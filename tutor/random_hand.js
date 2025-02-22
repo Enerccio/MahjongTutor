@@ -3,6 +3,19 @@ const imageMap = {
 
 }
 
+class JSFuDetail {
+
+    constructor(fu_detail) {
+        this._fu_value = fu_detail.get("fu");
+        this._fu_name = fu_detail.get("reason");
+    }
+
+    get str() {
+        return window.loc.getFu(this._fu_name) + ": " + this._fu_value;
+    }
+
+}
+
 class JSTile {
 
     constructor(tile_ref) {
@@ -143,6 +156,48 @@ class JSRandomHand {
     get_uradora() {
         return as_tiles(this._ref.uradora_indicators);
     }
+
+    get_fu() {
+        return this._ref.get_fu();
+    }
+
+    get_han() {
+        return this._ref.get_han();
+    }
+
+    get_points() {
+        return this._ref.get_points();
+    }
+
+    get_fu_details() {
+        return as_fu_details(this._ref.get_fu_details());
+    }
+
+    get_fu_details_complete() {
+        const fu = this.get_fu_details();
+        let str = "";
+        for (let i=0; i<fu.length; i++) {
+            str += fu[i].str;
+            if (i < fu.length-1)
+                str += "\n";
+        }
+        return str;
+    }
+
+    get_yaku() {
+        return as_yaku(this._ref.get_yaku());
+    }
+
+    get_yaku_full() {
+        const yaku = this.get_yaku();
+        let str = "";
+        for (let i=0; i<yaku.length; i++) {
+            str += window.loc.getYakuName(yaku[i]);
+            if (i < yaku.length-1)
+                str += "\n";
+        }
+        return str;
+    }
 }
 
 function as_melds(pyrefarray) {
@@ -167,6 +222,23 @@ function as_tiles(pyrefarray) {
     return tiles;
 }
 
+function as_fu_details(pyrefarray) {
+    const fu_details = [];
+    for (let i=0; i<pyrefarray.length; i++) {
+        const fuDetail = pyrefarray[i];
+        fu_details.push(new JSFuDetail(fuDetail));
+    }
+    return fu_details;
+}
+
+function as_yaku(pyrefarray) {
+    const yaku = [];
+    for (let i=0; i<pyrefarray.length; i++) {
+        const y = pyrefarray[i];
+        yaku.push(y.toString());
+    }
+    return yaku;
+}
 
 const __staticImageCacheLoader = [
     "Back.svg",

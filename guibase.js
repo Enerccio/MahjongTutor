@@ -311,8 +311,8 @@ class GuiHelper {
         const background = new Konva.Rect({
             x: 0,
             y: 0,
-            width: 900,
-            height: 600,
+            width: 730,
+            height: 500,
             fill: window.mahjongTutorStyler.fillColor,
             stroke: window.mahjongTutorStyler.fillColor
         });
@@ -400,5 +400,17 @@ class GuiHelper {
     async renderTextField(layer, x, y, width, height, textSize, group, callback) {
         const tf = new TextField(this, layer, x, y, group, width, height, textSize, callback);
         await tf.render();
+    }
+
+    getTextSize(text, fontSize) {
+        const label = new Konva.Text({
+            x: 0,
+            y: 0,
+            text: text,
+            fontSize: fontSize,
+            fontFamily: window.mahjongTutorStyler.font,
+            align: 'center',
+        });
+        return {"width": label.width(), "height": label.height()};
     }
 }
