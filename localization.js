@@ -143,7 +143,7 @@ class LocalizationJP extends Localization {
     }
 
     loadFu() {
-        this._fu["base"] = "ベース";
+        this._fu["base"] = "符底";
         this._fu["penchan"] = "辺張待ち";
         this._fu["kanchan"] = "嵌張待ち";
         this._fu["valued_pair"] = "役牌雀頭";
